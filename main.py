@@ -7,6 +7,7 @@
 import random
 import pyttsx3
 import time
+from num2words import num2words
 
 
 def load_workouts():
@@ -32,7 +33,13 @@ def get_rand_workouts(workout_list, time):
     # have the same choice twice when making random choices
     workout_time_array = []
     num_workouts = time * 2
-    workouts = random.choices(workout_list, k=num_workouts)
+    workouts = []
+    count = num_workouts
+    while count > 0:
+        w = random.choice(workout_list)
+        workouts.append(w)
+        workout_list.remove(w)
+        count = count - 1
     for w in workouts:
         w_arr = [w, 30]
         workout_time_array.append(w_arr)
@@ -44,7 +51,7 @@ def speak_workouts(workout_list):
     while workout_list:
         workout = workout_list.pop()
         print(workout)
-        engine.say(workout[0])
+        engine.say(workout[0] + " for " + num2words(workout[1]) + " seconds")
         engine.runAndWait()
         time.sleep(workout[1] / 10)
 
